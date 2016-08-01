@@ -1,0 +1,26 @@
+User Journey:
+
+*Sign Up*
+1. Opening page is login with link to Sign Up. Either flow runs through firebase
+authentication/account set up and once established routes to Account.
+
+*Account Page/Spotify Auth*
+2. Upon reaching Account page state updated with user details pulled from firebase.
+If auth with spotify cannot be established prompt this to happen.
+
+2(a). Run through Spotify auth process and store relevant codes etc in the state and
+firebase database as child data to the user.
+
+*Account Page/Song Search and Set*
+3. input box to search for and set song. Certain info stored in the state and the
+actual song object stored as child data to the user in the database.
+
+*Account Page/Daily Song List*
+4. Geolocation checked as per happen and users' songs added to the state as an array
+of objects. When starred these are added as child data to the user on firebase. Option
+to add to playlist on Spotify, button click.
+
+(Also need to track how many stars a user's track has and update that in the account state)
+
+/Step 1/
+Implement login and signup through to Account Page using firebase. Upon reaching Account page show details of the User (name, email, whatever)
