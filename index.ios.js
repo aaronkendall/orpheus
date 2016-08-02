@@ -48,7 +48,7 @@ class Orpheus extends Component {
         return (<SignUp navigator={navigator} />);
     }
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {

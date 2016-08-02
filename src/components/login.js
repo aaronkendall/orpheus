@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import * as firebase from 'firebase';
-import app from '../misc/firebase';
+import { app } from '../misc/firebase';
 
 class Login extends Component {
   constructor(props) {
@@ -55,6 +55,7 @@ class Login extends Component {
       </View>
     );
   }
-}
+};
 
 AppRegistry.registerComponent('Login', () => Login);
+export default Login;

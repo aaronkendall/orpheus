@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import * as firebase from 'firebase';
-import app from '../misc/firebase';
+import { app } from '../misc/firebase';
 
 class SignUp extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class SignUp extends Component {
           if (app.auth().currentUser) {
             this.props.navigator.push({ id: 'Account' });
           }
-        }, () => {
+        }, (error) => {
           console.error(error.message);
         });
     }
@@ -42,25 +42,25 @@ class SignUp extends Component {
 
   render() {
     return(
-      <View>
+      <View style={styles.container}>
         <TextInput
           style={{height: 40}}
           placeholder='Email'
           onChangeText={(text) => this.setState({email})}
         />
         <TextInput
-          style={{height: 40}}
+          style={styles.textinput}
           placeholder='Password'
           secureTextEntry={true}
           onChangeText={(text) => this.setState({password})}
         />
         <TextInput
-          style={{height: 40}}
+          style={styles.textinput}
           placeholder='Confirm Password'
           secureTextEntry={true}
           onChangeText={(text) => this.setState({confirmation})}
         />
-        <TouchableHighlight onPress={this.performSignUp()}>
+        <TouchableHighlight onPress={this.performSignUp}>
           <Text>
             Sign Up
           </Text>
@@ -68,4 +68,21 @@ class SignUp extends Component {
       </View>
     );
   }
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  textinput: {
+    height: 40,
+    borderColor: 'red',
+    borderWidth: 1
+  }
+});
+
+AppRegistry.registerComponent('SignUp', () => SignUp);
+export default SignUp;

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import * as firebase from 'firebase';
-import app from '../misc/firebase';
+import { app } from '../misc/firebase';
 
 class Account extends Component {
 
@@ -31,6 +31,7 @@ class Account extends Component {
       </Text>
     );
   }
-}
+};
 
 AppRegistry.registerComponent('Account', () => Account);
+export default Account;
