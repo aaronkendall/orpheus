@@ -20,6 +20,7 @@ class Login extends Component {
       email: '',
       password: ''
     };
+    this.performLogin = this.performLogin.bind(this);
   }
 
   performLogin() {
@@ -39,13 +40,13 @@ class Login extends Component {
         <TextInput
           style={{height: 40}}
           placeholder='Email'
-          onChangeText={(text) => this.setState({email})}
+          onChangeText={(text) => this.setState({email: text})}
         />
         <TextInput
           style={{height: 40}}
           placeholder='Password'
           secureTextEntry={true}
-          onChangeText={(text) => this.setState({password})}
+          onChangeText={(text) => this.setState({password: text})}
         />
         <TouchableHighlight onPress={this.performLogin}>
           <Text>
@@ -57,5 +58,4 @@ class Login extends Component {
   }
 };
 
-// AppRegistry.registerComponent('Login', () => Login);
 export default Login;

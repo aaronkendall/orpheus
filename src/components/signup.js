@@ -23,6 +23,7 @@ class SignUp extends Component {
       confirmation: ''
     };
     this.performSignUp = this.performSignUp.bind(this);
+    this.navigateToLogin = this.navigateToLogin.bind(this);
   }
 
   performSignUp() {
@@ -39,6 +40,10 @@ class SignUp extends Component {
     else {
       console.error("Error, confirmation does not match password");
     }
+  }
+
+  navigateToLogin() {
+    this.props.navigator.push({ id: 'Login' });
   }
 
   render() {
@@ -61,9 +66,14 @@ class SignUp extends Component {
           secureTextEntry={true}
           onChangeText={(text) => this.setState({confirmation: text})}
         />
-      <TouchableHighlight onPress={this.performSignUp} style={{backgroundColor: 'blue'}}>
+        <TouchableHighlight onPress={this.performSignUp} style={{backgroundColor: 'blue'}}>
           <Text>
             Sign Up
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this.navigateToLogin} style={{backgroundColor: 'red'}}>
+          <Text>
+            Login
           </Text>
         </TouchableHighlight>
       </View>
@@ -82,5 +92,4 @@ const styles = StyleSheet.create({
   }
 });
 
-// AppRegistry.registerComponent('SignUp', () => SignUp);
 export default SignUp;
