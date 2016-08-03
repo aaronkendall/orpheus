@@ -30,7 +30,8 @@ class Orpheus extends Component {
       <Navigator
         style={styles.container}
         initialRoute={{id: 'SignUp'}}
-        renderScene={this.navigatorRenderScene}/>
+        renderScene={this.navigatorRenderScene}
+      />
     );
   }
 
@@ -39,13 +40,13 @@ class Orpheus extends Component {
 
     switch (route.id) {
       case 'Login':
-        return (<Login navigator={navigator} />);
+        return (<Login navigator={navigator} route={route} />);
       case 'SignUp':
-        return (<SignUp navigator={navigator} />);
+        return (<SignUp navigator={navigator} route={route} />);
       case 'Account':
-        return (<Account navigator={navigator} />);
+        return (<Account navigator={navigator} route={route} />);
       default:
-        return (<SignUp navigator={navigator} />);
+        return (<SignUp navigator={navigator} route={route} />);
     }
   }
 };

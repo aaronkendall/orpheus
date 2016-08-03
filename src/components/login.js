@@ -47,7 +47,7 @@ class Login extends Component {
           secureTextEntry={true}
           onChangeText={(text) => this.setState({password})}
         />
-        <TouchableHighlight onPress={this.performLogin()}>
+        <TouchableHighlight onPress={this.performLogin}>
           <Text>
             Login
           </Text>
