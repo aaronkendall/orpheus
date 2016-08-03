@@ -57,5 +57,5 @@ class Login extends Component {
   }
 };
 
-AppRegistry.registerComponent('Login', () => Login);
+// AppRegistry.registerComponent('Login', () => Login);
 export default Login;

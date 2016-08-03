@@ -22,6 +22,7 @@ class SignUp extends Component {
       password: '',
       confirmation: ''
     };
+    this.performSignUp = this.performSignUp.bind(this);
   }
 
   performSignUp() {
@@ -44,23 +45,23 @@ class SignUp extends Component {
     return(
       <View style={styles.container}>
         <TextInput
-          style={{height: 40}}
+          style={styles.textinput}
           placeholder='Email'
-          onChangeText={(text) => this.setState({email})}
+          onChangeText={(text) => this.setState({email: text})}
         />
         <TextInput
           style={styles.textinput}
           placeholder='Password'
           secureTextEntry={true}
-          onChangeText={(text) => this.setState({password})}
+          onChangeText={(text) => this.setState({password: text})}
         />
         <TextInput
           style={styles.textinput}
           placeholder='Confirm Password'
           secureTextEntry={true}
-          onChangeText={(text) => this.setState({confirmation})}
+          onChangeText={(text) => this.setState({confirmation: text})}
         />
-        <TouchableHighlight onPress={this.performSignUp}>
+      <TouchableHighlight onPress={this.performSignUp} style={{backgroundColor: 'blue'}}>
           <Text>
             Sign Up
           </Text>
@@ -72,8 +73,7 @@ class SignUp extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0,
-    backgroundColor: '#000000'
+    backgroundColor: '#222'
   },
   textinput: {
     height: 40,
@@ -82,5 +82,5 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('SignUp', () => SignUp);
+// AppRegistry.registerComponent('SignUp', () => SignUp);
 export default SignUp;

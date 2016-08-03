@@ -33,5 +33,5 @@ class Account extends Component {
   }
 };
 
-AppRegistry.registerComponent('Account', () => Account);
+// AppRegistry.registerComponent('Account', () => Account);
 export default Account;
