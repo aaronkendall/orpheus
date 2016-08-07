@@ -13,6 +13,7 @@ import {
 
 import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
+import { styles } from '../style/styles';
 
 class SignUp extends Component {
   constructor(props) {
@@ -48,48 +49,48 @@ class SignUp extends Component {
 
   render() {
     return(
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textinput}
-          placeholder='Email'
-          onChangeText={(text) => this.setState({email: text})}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder='Password'
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({password: text})}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder='Confirm Password'
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({confirmation: text})}
-        />
-        <TouchableHighlight onPress={this.performSignUp} style={{backgroundColor: 'blue'}}>
-          <Text>
+      <View style={styles.background}>
+        <View style={styles.container}>
+          <Text style={styles.title}>
             Sign Up
           </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.navigateToLogin} style={{backgroundColor: 'red'}}>
-          <Text>
-            Login
-          </Text>
-        </TouchableHighlight>
+          <View style={styles.borderBottom}>
+            <TextInput
+              style={styles.textinput}
+              placeholder='Email'
+              onChangeText={(text) => this.setState({email: text})}
+            />
+          </View>
+          <View style={styles.borderBottom}>
+            <TextInput
+              style={styles.textinput}
+              placeholder='Password'
+              secureTextEntry={true}
+              onChangeText={(text) => this.setState({password: text})}
+            />
+          </View>
+          <View style={styles.borderBottom}>
+            <TextInput
+              style={styles.textinput}
+              placeholder='Confirm Password'
+              secureTextEntry={true}
+              onChangeText={(text) => this.setState({confirmation: text})}
+            />
+          </View>
+          <TouchableHighlight onPress={this.performSignUp} style={styles.button}>
+            <Text>
+              Sign Up
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this.navigateToLogin} style={styles.button}>
+            <Text>
+              Login
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#222'
-  },
-  textinput: {
-    height: 40,
-    borderColor: 'red',
-    borderWidth: 1
-  }
-});
 
 export default SignUp;
