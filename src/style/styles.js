@@ -14,7 +14,15 @@ const styles = StyleSheet.create({
     width: 300,
     alignItems: 'flex-start',
     paddingTop: 30,
-    flex: 1
+    paddingBottom: 30,
+    flex: 0
+  },
+  body: {
+    fontSize: 12,
+    width: 300,
+    paddingTop: 15,
+    paddingBottom: 15,
+    alignItems: 'center'
   },
   textinput: {
     height: 40,

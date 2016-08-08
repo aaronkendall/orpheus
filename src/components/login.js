@@ -12,6 +12,7 @@ import {
 
 import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
+import { styles } from '../style/styles';
 
 class Login extends Component {
   constructor(props) {
@@ -36,23 +37,32 @@ class Login extends Component {
 
   render() {
     return(
-      <View>
-        <TextInput
-          style={{height: 40}}
-          placeholder='Email'
-          onChangeText={(text) => this.setState({email: text})}
-        />
-        <TextInput
-          style={{height: 40}}
-          placeholder='Password'
-          secureTextEntry={true}
-          onChangeText={(text) => this.setState({password: text})}
-        />
-        <TouchableHighlight onPress={this.performLogin}>
-          <Text>
+      <View style={styles.background}>
+        <View style={styles.container}>
+          <Text style={styles.title}>
             Login
           </Text>
-        </TouchableHighlight>
+          <View style={styles.borderBottom}>
+            <TextInput
+              style={styles.textinput}
+              placeholder='Email'
+              onChangeText={(text) => this.setState({email: text})}
+            />
+          </View>
+          <View style={styles.borderBottom}>
+            <TextInput
+              style={styles.textinput}
+              placeholder='Password'
+              secureTextEntry={true}
+              onChangeText={(text) => this.setState({password: text})}
+            />
+          </View>
+          <TouchableHighlight onPress={this.performLogin} style={styles.button}>
+            <Text>
+              Login
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
