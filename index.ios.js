@@ -16,7 +16,8 @@ import {
   Text,
   TextInput,
   View,
-  Navigator
+  Navigator,
+  Linking
 } from 'react-native';
 
 import Login from './src/components/login';

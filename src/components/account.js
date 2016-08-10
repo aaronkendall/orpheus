@@ -7,12 +7,14 @@ import {
   Text,
   TextInput,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  Linking
 } from 'react-native';
 
 import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
 import { styles } from '../style/styles';
+import { spotifyConfig } from '../misc/spotify';
 
 class Account extends Component {
 
@@ -20,6 +22,8 @@ class Account extends Component {
     super(props);
     this.state = {
       spotifyAuth: false,
+      spotifyEmail: '',
+      spotifyPassword: '',
       query: '',
       chosenSong: {},
       currentUser: app.auth().currentUser
@@ -27,10 +31,23 @@ class Account extends Component {
     this._renderSpotifySearch = this._renderSpotifySearch.bind(this);
     this._renderSpotifyAuth = this._renderSpotifyAuth.bind(this);
     this.performSpotifyAuth = this.performSpotifyAuth.bind(this);
+    this.spotifyRedirect = this.spotifyRedirect.bind(this);
   }
 
   performSpotifyAuth() {
-    this.setState({ spotifyAuth: true });
+    Linking.openURL(
+      "https://accounts.spotify.com/authorize?" +
+      "client_id=" + spotifyConfig.clientId +
+      "&response_type=token" +
+      "&redirect_uri=" + spotifyConfig.redirectURI +
+      "&scope=" + spotifyConfig.scope
+    );
+    Linking.addEventListener('url', this.spotifyRedirect);
+  }
+
+  spotifyRedirect(event) {
+    console.log(event.url);
+    Linking.removeEventListener('url', this.spotifyRedirect);
   }
 
   _renderSpotifySearch() {
