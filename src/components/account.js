@@ -25,6 +25,7 @@ class Account extends Component {
       spotifyEmail: '',
       spotifyPassword: '',
       query: '',
+      searchResults: [],
       chosenSong: {},
       currentUser: app.auth().currentUser
     };
@@ -32,6 +33,18 @@ class Account extends Component {
     this._renderSpotifyAuth = this._renderSpotifyAuth.bind(this);
     this.performSpotifyAuth = this.performSpotifyAuth.bind(this);
     this.spotifyRedirect = this.spotifyRedirect.bind(this);
+    this.searchSpotify = this.searchSpotify.bind(this);
+  }
+
+  componentWillUpdate() {
+    // Something about state.query changing calls searchSpotify
+  }
+
+  _searchSpotify() {
+    fetch(spotifyConfig.spotifySearch + this.state.query)
+      .then((response) => {
+        this.setState({ searchResults: response.tracksOrSomething });
+      });
   }
 
   performSpotifyAuth() {
@@ -47,6 +60,9 @@ class Account extends Component {
 
   spotifyRedirect(event) {
     console.log(event.url);
+    app.database().ref('users/' + this.state.currentUser.userId).set({
+      spotifyToken: urlTokenSortThing
+    });
     Linking.removeEventListener('url', this.spotifyRedirect);
   }
 
