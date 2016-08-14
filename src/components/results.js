@@ -5,9 +5,12 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  TextInput,
-  View
+  Image,
+  View,
+  TouchableHighlight
 } from 'react-native';
+
+import { styles } from '../style/styles';
 
 class Results extends Component {
   constructor(props) {
@@ -15,8 +18,28 @@ class Results extends Component {
   }
 
   render() {
-
+    if (this.props.songs) {
+      return(
+        <View>
+          for (let i = 0; i >= this.props.songs.length; i++) {
+            return(
+              <TouchableHighlight onPress={this.props.selectSong}>
+                <View style={styles.songResultCard}>
+                  <Image style={styles.songImage} source={require(song.image)} />
+                  <Text style={styles.songDetails}>
+                    {song.title}
+                    {song.artist}
+                    {song.album}
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            );
+          };
+        </View>
+      );
+    }
+    return null;
   }
 }
 
-AppRegistry.registerComponent('Results', () => Results);
+export default Results;

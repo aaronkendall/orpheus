@@ -14,6 +14,7 @@ import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
 import { styles } from '../style/styles';
 import { spotifyConfig } from '../misc/spotify';
+import Results from './results';
 
 class Account extends Component {
 
@@ -26,12 +27,14 @@ class Account extends Component {
       spotifyProfileURL: '',
       spotifyProduct: '',
       spotifyFollowers: '',
+      spotifyCountry: '',
       query: '',
       searchResults: [],
       chosenSong: {}
     };
     this._renderSpotifySearch = this._renderSpotifySearch.bind(this);
     this._renderSpotifyAuth = this._renderSpotifyAuth.bind(this);
+    this._setSong = this._setSong.bind(this);
     this.searchSpotify = this.searchSpotify.bind(this);
   }
 
@@ -47,7 +50,8 @@ class Account extends Component {
           spotifyDisplayName: response.display_name,
           spotifyProfileURL: response.external_urls.spotify,
           spotifyProduct: response.product,
-          spotifyFollowers: response.followers.total
+          spotifyFollowers: response.followers.total,
+          spotifyCountry: response.country
         });
       });
       .catch((error) => {
@@ -60,8 +64,17 @@ class Account extends Component {
     // Something about state.query changing calls searchSpotify
   }
 
+  _setSong(song) {
+    this.setState({ chosenSong: song });
+    app.database().ref('users/' + this.state.spotifyUsername).set({
+      song: song
+    });
+  }
+
   _searchSpotify() {
-    fetch(spotifyConfig.spotifySearchURL + this.state.query)
+    fetch(spotifyConfig.spotifySearchURL
+      + this.state.query
+      + '&market=' + this.state.spotifyCountry)
       .then((response) => {
         this.setState({ searchResults: response.tracksOrSomething });
       });
@@ -89,6 +102,7 @@ class Account extends Component {
             Hello, {this.state.spotifyDisplayName}
           </Text>
           {content}
+          <Results songs={this.state.searchResults} selectSong={this._setSong} />
         </View>
       </View>
     );

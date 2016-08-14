@@ -46,6 +46,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     flex: 0
+  },
+  songResultCard: {
+    width: 300,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    borderColor: 'red',
+    borderWidth: StyleSheet.hairlineWidth
+  },
+  songImage: {
+    width: 45,
+    height: 45
+  },
+  songDetails: {
+    fontSize: 12
   }
 });
 
