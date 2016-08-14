@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     width: 300
   },
   button: {
-    height: 30,
+    height: 40,
     width: 150,
     backgroundColor: 'powderblue',
     alignSelf: 'center',

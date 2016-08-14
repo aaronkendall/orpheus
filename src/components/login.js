@@ -8,13 +8,14 @@ import {
   TextInput,
   TouchableHighlight,
   View,
-  Linking
+  Linking,
+  AsyncStorage
 } from 'react-native';
 
 import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
 import { styles } from '../style/styles';
-import shittyQs from 'shitty-qs';
+import qs from 'shitty-qs';
 import { spotifyConfig } from '../misc/spotify';
 
 class Login extends Component {
@@ -22,16 +23,15 @@ class Login extends Component {
     super(props);
     this.performSpotifyAuth = this.performSpotifyAuth.bind(this);
     this.spotifyRedirect = this.spotifyRedirect.bind(this);
-    this.performLogin = this.performLogin.bind(this);
   }
 
   componentWillMount() {
     AsyncStorage.getItem('@Orpheus:spotifyAccessToken')
       .then((token) => {
-        if (token !== null && !this.props.navigator.refreshAuth) {
+        if (token !== null && !this.props.route.refreshAuth) {
           this.props.navigator.push({ id: 'Account', accessToken: token });
-        };
-      };
+        }
+      });
   }
 
   performSpotifyAuth() {
@@ -46,28 +46,29 @@ class Login extends Component {
   }
 
   spotifyRedirect(event) {
-    console.log(event.url);
-    let queryString = event.url.match(/\#(.*)/);
-    let query = shittyQs(queryString);
-    AsyncStorage.setItem('@Orpheus:spotifyAccessToken', queryString.access_token)
+    let queryString = event.url.match(/\#(.*)/)[1];
+    let query = qs(queryString);
+    AsyncStorage.setItem('@Orpheus:spotifyAccessToken', query.access_token)
       .then(() => {
-        this.props.navigator.push({ id: 'Account' });
+        this.props.navigator.push({ id: 'Account', accessToken: query.access_token });
         Linking.removeEventListener('url', this.spotifyRedirect);
       });
   }
 
   render() {
     return(
-      <View>
-        <Text style={styles.body}>
-          Login or Sign Up to Orpheus with Spotify to search and select your daily
-          song and start discovering new music
-        </Text>
-        <TouchableHighlight onPress={this.performSpotifyAuth} style={styles.button}>
-          <Text>
-            Login / Sign Up to Spotify
+      <View style={styles.background}>
+        <View style={styles.container}>
+          <Text style={styles.body}>
+            Login or Sign Up to Orpheus with Spotify to search and select your daily
+            song and start discovering new music
           </Text>
-        </TouchableHighlight>
+          <TouchableHighlight onPress={this.performSpotifyAuth} style={styles.button}>
+            <Text>
+              Login / Sign Up to Spotify
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
