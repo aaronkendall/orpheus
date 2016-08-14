@@ -8,6 +8,7 @@
   "dependencies": {
     "firebase": "^3.2.1",
     "react": "15.2.1",
-    "react-native": "^0.30.0"
+    "react-native": "^0.30.0",
+    "shitty-qs": "^1.0.1"
   }
 }

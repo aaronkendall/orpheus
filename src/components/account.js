@@ -7,8 +7,7 @@ import {
   Text,
   TextInput,
   View,
-  TouchableHighlight,
-  Linking
+  TouchableHighlight
 } from 'react-native';
 
 import * as firebase from 'firebase';
@@ -21,19 +20,40 @@ class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      spotifyAuth: false,
       spotifyEmail: '',
-      spotifyPassword: '',
+      spotifyUsername: '',
+      spotifyDisplayName: '',
+      spotifyProfileURL: '',
+      spotifyProduct: '',
+      spotifyFollowers: '',
       query: '',
       searchResults: [],
-      chosenSong: {},
-      currentUser: app.auth().currentUser
+      chosenSong: {}
     };
     this._renderSpotifySearch = this._renderSpotifySearch.bind(this);
     this._renderSpotifyAuth = this._renderSpotifyAuth.bind(this);
-    this.performSpotifyAuth = this.performSpotifyAuth.bind(this);
-    this.spotifyRedirect = this.spotifyRedirect.bind(this);
     this.searchSpotify = this.searchSpotify.bind(this);
+  }
+
+  componentWillMount() {
+    fetch(spotifyConfig.spotifyUserURL, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + this.props.navigator.accessToken,
+      }).then((response) => {
+        this.setState({
+          spotifyEmail: response.email,
+          spotifyUsername: response.id,
+          spotifyDisplayName: response.display_name,
+          spotifyProfileURL: response.external_urls.spotify,
+          spotifyProduct: response.product,
+          spotifyFollowers: response.followers.total
+        });
+      });
+      .catch((error) => {
+        console.log("error fetching user data", error);
+        this.props.navigator.push({ id: 'Login', refreshAuth: true });
+      })
   }
 
   componentWillUpdate() {
@@ -41,29 +61,10 @@ class Account extends Component {
   }
 
   _searchSpotify() {
-    fetch(spotifyConfig.spotifySearch + this.state.query)
+    fetch(spotifyConfig.spotifySearchURL + this.state.query)
       .then((response) => {
         this.setState({ searchResults: response.tracksOrSomething });
       });
-  }
-
-  performSpotifyAuth() {
-    Linking.openURL(
-      "https://accounts.spotify.com/authorize?" +
-      "client_id=" + spotifyConfig.clientId +
-      "&response_type=token" +
-      "&redirect_uri=" + spotifyConfig.redirectURI +
-      "&scope=" + spotifyConfig.scope
-    );
-    Linking.addEventListener('url', this.spotifyRedirect);
-  }
-
-  spotifyRedirect(event) {
-    console.log(event.url);
-    app.database().ref('users/' + this.state.currentUser.userId).set({
-      spotifyToken: urlTokenSortThing
-    });
-    Linking.removeEventListener('url', this.spotifyRedirect);
   }
 
   _renderSpotifySearch() {
@@ -78,31 +79,14 @@ class Account extends Component {
     );
   }
 
-  _renderSpotifyAuth() {
-    return(
-      <View>
-        <Text style={styles.body}>
-          Link your Orpheus Account with Spotify to search and select your daily
-          song and start discovering new music
-        </Text>
-        <TouchableHighlight onPress={this.performSpotifyAuth} style={styles.button}>
-          <Text>
-            Login to Spotify
-          </Text>
-        </TouchableHighlight>
-      </View>
-    );
-  }
-
   render() {
-    let content;
-    this.state.spotifyAuth ? content = this._renderSpotifySearch() : content = this._renderSpotifyAuth();
+    let content = this._renderSpotifySearch();
 
     return(
       <View style={styles.background}>
         <View style={styles.container}>
           <Text style={styles.title}>
-            Hello, {this.state.currentUser.email}
+            Hello, {this.state.spotifyDisplayName}
           </Text>
           {content}
         </View>

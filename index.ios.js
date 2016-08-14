@@ -21,7 +21,6 @@ import {
 } from 'react-native';
 
 import Login from './src/components/login';
-import SignUp from './src/components/signup';
 import Account from './src/components/account';
 
 class Orpheus extends Component {
@@ -30,7 +29,7 @@ class Orpheus extends Component {
     return (
       <Navigator
         style={styles.container}
-        initialRoute={{id: 'SignUp'}}
+        initialRoute={{id: 'Login'}}
         renderScene={this.navigatorRenderScene}
       />
     );
@@ -42,12 +41,10 @@ class Orpheus extends Component {
     switch (route.id) {
       case 'Login':
         return (<Login navigator={navigator} route={route} />);
-      case 'SignUp':
-        return (<SignUp navigator={navigator} route={route} />);
       case 'Account':
         return (<Account navigator={navigator} route={route} />);
       default:
-        return (<SignUp navigator={navigator} route={route} />);
+        return (<Login navigator={navigator} route={route} />);
     }
   }
 };
