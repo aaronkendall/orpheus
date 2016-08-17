@@ -48,11 +48,26 @@ class Login extends Component {
   spotifyRedirect(event) {
     let queryString = event.url.match(/\#(.*)/)[1];
     let query = qs(queryString);
-    AsyncStorage.setItem('@Orpheus:spotifyAccessToken', query.access_token)
-      .then(() => {
-        this.props.navigator.push({ id: 'Account', accessToken: query.access_token });
-        Linking.removeEventListener('url', this.spotifyRedirect);
-      });
+    let authCode = query.access_token;
+    fetch(spotifyConfig.spotifyAccessURL, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        accessToken: authCode,
+      })
+    }).then((response) => {
+      responseJSON = response.json();
+    }).then((responseJSON) => {
+      AsyncStorage.multiSet([['@Orpheus:spotifyAccessToken', responseJSON.access_token],
+                            ['@Orpheus:spotifyRefreshToken', responseJSON.refresh_token]])
+        .then(() => {
+          this.props.navigator.push({ id: 'Account' });
+          Linking.removeEventListener('url', this.spotifyRedirect);
+        });
+    })
   }
 
   render() {

@@ -7,7 +7,8 @@ import {
   Text,
   TextInput,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  AsyncStorage
 } from 'react-native';
 
 import * as firebase from 'firebase';
@@ -37,39 +38,65 @@ class Account extends Component {
     this._searchSpotify = this._searchSpotify.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
     this.componentWillUpdate = this.componentWillUpdate.bind(this);
+    this._refreshSpotifyToken = this._refreshSpotifyToken.bind(this);
   }
 
   componentWillMount() {
-    fetch(spotifyConfig.spotifyUserURL, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + this.props.route.accessToken
-      }})
-      .then((response) => response.json())
-      .then((responseJSON) => {
-        if (responseJSON.error) {
-          this.props.navigator.push({ id: 'Login', refreshAuth: true });
-        }
-        this.setState({
-          spotifyEmail: responseJSON.email,
-          spotifyUsername: responseJSON.id,
-          spotifyDisplayName: responseJSON.display_name,
-          spotifyProfileURL: responseJSON.href,
-          spotifyProduct: responseJSON.product,
-          spotifyFollowers: responseJSON.followers,
-          spotifyCountry: responseJSON.country
-        });
-      })
-      .catch((error) => {
-        console.log("error fetching user data", error);
-        this.props.navigator.push({ id: 'Login', refreshAuth: true });
-      })
+    AsyncStorage.getItem('@Orpheus:spotifyAccessToken')
+      .then((accessToken) => {
+        fetch(spotifyConfig.spotifyUserURL, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + accessToken
+          }})
+          .then((response) => response.json())
+          .then((responseJSON) => {
+            this.setState({
+              spotifyEmail: responseJSON.email,
+              spotifyUsername: responseJSON.id,
+              spotifyDisplayName: responseJSON.display_name,
+              spotifyProfileURL: responseJSON.href,
+              spotifyProduct: responseJSON.product,
+              spotifyFollowers: responseJSON.followers,
+              spotifyCountry: responseJSON.country
+            });
+          })
+          .catch((error) => {
+            this._refreshSpotifyToken();
+          });
+      });
   }
 
   componentWillUpdate(nextProps, nextState) {
     if (nextState.query !== this.state.query ) {
       this._searchSpotify();
     };
+  }
+
+  _refreshSpotifyToken() {
+    AsyncStorage.getItem('@Orpheus:spotifyRefreshToken')
+      .then((refreshAuth) => {
+        fetch(spotifyConfig.spotifyRefreshURL, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            refreshToken: refreshAuth,
+          })
+        }).then((response) => {
+          responseJSON = response.json();
+        }).then((responseJSON) => {
+          AsyncStorage.setItem('@Orpheus:spotifyAccessToken', responseJSON.access_token)
+            .then(() => {
+              this.componentWillMount();
+            });
+        })
+        .catch((error) => {
+          console.log("error refreshing auth token:", error);
+        });
+      });
   }
 
   _setSong(song) {

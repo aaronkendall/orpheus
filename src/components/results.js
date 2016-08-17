@@ -15,11 +15,14 @@ import { styles } from '../style/styles';
 class Results extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      songs: this.props.songs
+    };
   }
 
   render() {
-    if (this.props.songs) {
-      let songList = this.props.songs.map((song) => {
+    if (this.state.songs) {
+      let songList = this.state.songs.map((song) => {
         return(
           <TouchableHighlight onPress={() => this.props.selectSong(song)}
             key={song.id}>
