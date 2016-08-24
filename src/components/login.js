@@ -28,8 +28,8 @@ class Login extends Component {
   componentWillMount() {
     AsyncStorage.getItem('@Orpheus:spotifyAccessToken')
       .then((token) => {
-        if (token !== null && !this.props.route.refreshAuth) {
-          this.props.navigator.push({ id: 'Account', accessToken: token });
+        if (token !== null) {
+          this.props.navigator.push({ id: 'Account' });
         }
       });
   }
@@ -38,7 +38,7 @@ class Login extends Component {
     Linking.openURL(
       "https://accounts.spotify.com/authorize?" +
       "client_id=" + spotifyConfig.clientId +
-      "&response_type=token" +
+      "&response_type=code" +
       "&redirect_uri=" + spotifyConfig.redirectURI +
       "&scope=" + spotifyConfig.scope
     );
@@ -46,9 +46,9 @@ class Login extends Component {
   }
 
   spotifyRedirect(event) {
-    let queryString = event.url.match(/\#(.*)/)[1];
+    let queryString = event.url.match(/\?(.*)/)[1];
     let query = qs(queryString);
-    let authCode = query.access_token;
+    let accessToken = query.code;
     fetch(spotifyConfig.spotifyAccessURL, {
       method: 'POST',
       headers: {
@@ -56,11 +56,11 @@ class Login extends Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        accessToken: authCode,
+        accessToken: accessToken,
       })
-    }).then((response) => {
-      responseJSON = response.json();
-    }).then((responseJSON) => {
+    })
+    .then((response) => responseJSON = response.json())
+    .then((responseJSON) => {
       AsyncStorage.multiSet([['@Orpheus:spotifyAccessToken', responseJSON.access_token],
                             ['@Orpheus:spotifyRefreshToken', responseJSON.refresh_token]])
         .then(() => {

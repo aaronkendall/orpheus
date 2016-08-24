@@ -85,15 +85,15 @@ class Account extends Component {
           body: JSON.stringify({
             refreshToken: refreshAuth,
           })
-        }).then((response) => {
-          responseJSON = response.json();
-        }).then((responseJSON) => {
+        }).then((response) => responseJSON = response.json())
+          .then((responseJSON) => {
           AsyncStorage.setItem('@Orpheus:spotifyAccessToken', responseJSON.access_token)
             .then(() => {
               this.componentWillMount();
             });
         })
         .catch((error) => {
+          this.props.navigator.push({ id: 'Login' })
           console.log("error refreshing auth token:", error);
         });
       });
