@@ -39,6 +39,7 @@ class Account extends Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.componentWillUpdate = this.componentWillUpdate.bind(this);
     this._refreshSpotifyToken = this._refreshSpotifyToken.bind(this);
+    this._setInitialState = this._setInitialState.bind(this);
   }
 
   componentWillMount() {
@@ -51,15 +52,7 @@ class Account extends Component {
           }})
           .then((response) => response.json())
           .then((responseJSON) => {
-            this.setState({
-              spotifyEmail: responseJSON.email,
-              spotifyUsername: responseJSON.id,
-              spotifyDisplayName: responseJSON.display_name,
-              spotifyProfileURL: responseJSON.href,
-              spotifyProduct: responseJSON.product,
-              spotifyFollowers: responseJSON.followers,
-              spotifyCountry: responseJSON.country
-            });
+            this._setInitialState(responseJSON);
           })
           .catch((error) => {
             this._refreshSpotifyToken();
@@ -71,6 +64,18 @@ class Account extends Component {
     if (nextState.query !== this.state.query ) {
       this._searchSpotify();
     };
+  }
+
+  _setInitialState(response) {
+    this.setState({
+      spotifyEmail: response.email,
+      spotifyUsername: response.id,
+      spotifyDisplayName: response.display_name,
+      spotifyProfileURL: response.href,
+      spotifyProduct: response.product,
+      spotifyFollowers: response.followers,
+      spotifyCountry: response.country
+    });
   }
 
   _refreshSpotifyToken() {
@@ -89,7 +94,7 @@ class Account extends Component {
           .then((responseJSON) => {
           AsyncStorage.setItem('@Orpheus:spotifyAccessToken', responseJSON.access_token)
             .then(() => {
-              this.componentWillMount();
+              this._setInitialState(responseJSON);
             });
         })
         .catch((error) => {
