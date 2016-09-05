@@ -36,8 +36,6 @@ class Account extends Component {
     this._renderSpotifySearch = this._renderSpotifySearch.bind(this);
     this._setSong = this._setSong.bind(this);
     this._searchSpotify = this._searchSpotify.bind(this);
-    this.componentWillMount = this.componentWillMount.bind(this);
-    this.componentWillUpdate = this.componentWillUpdate.bind(this);
     this._refreshSpotifyToken = this._refreshSpotifyToken.bind(this);
     this._setInitialState = this._setInitialState.bind(this);
   }
@@ -60,11 +58,11 @@ class Account extends Component {
       });
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.query !== this.state.query ) {
-      this._searchSpotify();
-    };
-  }
+  // componentWillUpdate(nextProps, nextState) {
+  //   if (nextState.query !== this.state.query && this.state.query) {
+  //     this._searchSpotify();
+  //   };
+  // }
 
   _setInitialState(response) {
     this.setState({
@@ -123,12 +121,19 @@ class Account extends Component {
 
   _renderSpotifySearch() {
     return(
-      <View style={styles.borderBottom}>
-        <TextInput
-          style={styles.textinput}
-          placeholder='Search and set your song...'
-          onChangeText={(text) => this.setState({query: text})}
-        />
+      <View>
+        <View style={styles.borderBottom}>
+          <TextInput
+            style={styles.textinput}
+            placeholder='Search and set your song...'
+            onChangeText={(text) => this.setState({query: text})}
+          />
+        </View>
+        <TouchableHighlight onPress={this._searchSpotify} style={styles.button}>
+          <Text>
+            Search
+          </Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -142,12 +147,14 @@ class Account extends Component {
           Daily Song: {this.state.chosenSong.name}
         </Text>
     }
+    console.log(this.state.searchResults);
     return(
       <View style={styles.background}>
         <View style={styles.container}>
           <Text style={styles.title}>
             Hello, {this.state.spotifyUsername}
           </Text>
+          {chosenSong}
           {content}
           <Results songs={this.state.searchResults} selectSong={this._setSong} />
         </View>

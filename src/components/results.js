@@ -15,37 +15,34 @@ import { styles } from '../style/styles';
 class Results extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      songs: this.props.songs
-    };
   }
 
   render() {
-    if (this.state.songs) {
-      let songList = this.state.songs.map((song) => {
+    let songList = null;
+    if (this.props.songs) {
+      songList = this.props.songs.map((song) => {
         return(
           <TouchableHighlight onPress={() => this.props.selectSong(song)}
             key={song.id}>
             <View style={styles.songResultCard}>
               <Image style={styles.songImage}
-                source={require(song.images[2].url)}
+                source={{uri: song.album.images[2].url}}
               />
               <Text style={styles.songDetails}>
                 {song.name}
-                {song.artists.name}
+                {song.artists[0].name}
                 {song.album.name}
               </Text>
             </View>
           </TouchableHighlight>
         );
       });
-      return(
-        <View>
-          {songList}
-        </View>
-      );
     }
-    return null;
+    return(
+      <View>
+        {songList}
+      </View>
+    );
   }
 }
 
