@@ -1,6 +1,3 @@
-// Main account page once authenticated to set song and display results
-// Also need to manage authenticating with Spotify here.
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -38,6 +35,8 @@ class Account extends Component {
     this._searchSpotify = this._searchSpotify.bind(this);
     this._refreshSpotifyToken = this._refreshSpotifyToken.bind(this);
     this._setInitialState = this._setInitialState.bind(this);
+    this._getSong = this._getSong.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   componentWillMount() {
@@ -53,6 +52,7 @@ class Account extends Component {
             this._setInitialState(responseJSON);
           })
           .catch((error) => {
+            console.log(error);
             this._refreshSpotifyToken();
           });
       });
@@ -72,8 +72,18 @@ class Account extends Component {
       spotifyProfileURL: response.href,
       spotifyProduct: response.product,
       spotifyFollowers: response.followers,
-      spotifyCountry: response.country
+      spotifyCountry: response.country,
     });
+    this._getSong(response.id);
+  }
+
+  _getSong(username) {
+    app.database().ref('users/' + username + '/song').once('value')
+      .then((snapshot) => {
+        this.setState({
+          chosenSong: snapshot.val() || {}
+        });
+      });
   }
 
   _refreshSpotifyToken() {
@@ -92,18 +102,18 @@ class Account extends Component {
           .then((responseJSON) => {
           AsyncStorage.setItem('@Orpheus:spotifyAccessToken', responseJSON.access_token)
             .then(() => {
-              this._setInitialState(responseJSON);
+              this.componentWillMount();
             });
         })
         .catch((error) => {
-          this.props.navigator.push({ id: 'Login' })
+          this.props.navigator.push({ id: 'Login' });
           console.log("error refreshing auth token:", error);
         });
       });
   }
 
   _setSong(song) {
-    this.setState({ chosenSong: song });
+    this.setState({ chosenSong: song, searchResults: [] });
     app.database().ref('users/' + this.state.spotifyUsername).set({
       song: song
     });
@@ -147,7 +157,6 @@ class Account extends Component {
           Daily Song: {this.state.chosenSong.name}
         </Text>
     }
-    console.log(this.state.searchResults);
     return(
       <View style={styles.background}>
         <View style={styles.container}>

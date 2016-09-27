@@ -1,14 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
- /**
- Learn how the navigator works and use that in here. Login page with link to
- sign up page to begin then movement to account page.
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
