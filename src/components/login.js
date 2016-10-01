@@ -3,13 +3,12 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableHighlight,
   View,
   Linking,
   AsyncStorage
 } from 'react-native';
 
+import Button from './button';
 import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
 import { styles } from '../style/styles';
@@ -70,17 +69,19 @@ class Login extends Component {
 
   render() {
     return(
-      <View style={styles.background}>
-        <View style={styles.container}>
-          <Text style={styles.body}>
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          Orpheus
+        </Text>
+        <View style={styles.body}>
+          <Text style={styles.p}>
             Login or Sign Up to Orpheus with Spotify to search and select your daily
             song and start discovering new music
           </Text>
-          <TouchableHighlight onPress={this.performSpotifyAuth} style={styles.button}>
-            <Text>
-              Login / Sign Up to Spotify
-            </Text>
-          </TouchableHighlight>
+          <Button
+            onPress={this.performSpotifyAuth}
+            text={'Login or sign up with Spotify'}
+          />
         </View>
       </View>
     );

@@ -1,34 +1,35 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: 'white'
-  },
   container: {
-    marginTop: 15,
-    height: 300,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#666666',
+    flex: 1
   },
   title: {
-    fontSize: 22,
-    width: 300,
-    alignItems: 'flex-start',
-    paddingTop: 30,
-    paddingBottom: 30,
-    flex: 0
+    fontSize: 16,
+    backgroundColor:'#23CF5F',
+    paddingTop:30,
+    paddingBottom:10,
+    flexDirection:'row',
+    alignSelf: 'stretch',
+    textAlign: 'center',
   },
   body: {
-    fontSize: 12,
     width: 300,
     paddingTop: 15,
-    paddingBottom: 15,
-    alignItems: 'center'
+    paddingBottom: 50,
+    alignItems: 'center',
+    flex: 10
+  },
+  p: {
+    fontSize: 12
   },
   textinput: {
     height: 40,
     padding: 5,
     width: 300,
-    flex: 2
+    flex: 3
   },
   borderBottom: {
     borderBottomColor: 'red',
@@ -37,15 +38,13 @@ const styles = StyleSheet.create({
     width: 300
   },
   button: {
-    height: 40,
-    width: 150,
-    backgroundColor: 'powderblue',
-    alignSelf: 'center',
+    height: 30,
+    backgroundColor: '#23CF5F',
+    padding: 20,
     alignItems: 'center',
+    borderRadius: 40,
     marginBottom: 10,
     justifyContent: 'center',
-    borderRadius: 10,
-    flex: 0
   },
   songResultCard: {
     width: 300,
