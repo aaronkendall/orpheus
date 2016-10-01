@@ -4,10 +4,10 @@ import {
   Text,
   TextInput,
   View,
-  TouchableHighlight,
   AsyncStorage
 } from 'react-native';
 
+import Button from './button';
 import * as firebase from 'firebase';
 import { app } from '../misc/firebase';
 import { styles } from '../style/styles';
@@ -139,11 +139,7 @@ class Account extends Component {
             onChangeText={(text) => this.setState({query: text})}
           />
         </View>
-        <TouchableHighlight onPress={this._searchSpotify} style={styles.button}>
-          <Text>
-            Search
-          </Text>
-        </TouchableHighlight>
+        <Button onPress={this._searchSpotify} text={'Search'} />
       </View>
     );
   }
@@ -153,20 +149,21 @@ class Account extends Component {
     let chosenSong = null;
     if (this.state.chosenSong) {
       chosenSong =
-        <Text style={styles.title}>
+        <Text style={styles.p}>
           Daily Song: {this.state.chosenSong.name}
         </Text>
     }
     return(
-      <View style={styles.background}>
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            Hello, {this.state.spotifyUsername}
-          </Text>
-          {chosenSong}
-          {content}
-          <Results songs={this.state.searchResults} selectSong={this._setSong} />
-        </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          Orpheus
+        </Text>
+        <Text style={styles.subtitle}>
+          Hello, {this.state.spotifyUsername}
+        </Text>
+        {chosenSong}
+        {content}
+        <Results songs={this.state.searchResults} selectSong={this._setSong} />
       </View>
     );
   }

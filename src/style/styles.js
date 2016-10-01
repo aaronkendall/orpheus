@@ -15,12 +15,16 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     textAlign: 'center',
   },
+  subtitle: {
+    fontSize: 16,
+    marginTop: 15,
+    marginBottom: 15
+  },
   body: {
     width: 300,
     paddingTop: 15,
     paddingBottom: 50,
     alignItems: 'center',
-    flex: 10
   },
   p: {
     fontSize: 12
@@ -28,13 +32,13 @@ const styles = StyleSheet.create({
   textinput: {
     height: 40,
     padding: 5,
-    width: 300,
-    flex: 3
+    width: 300
   },
   borderBottom: {
     borderBottomColor: 'red',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 5,
+    marginBottom: 15,
+    marginTop: 15,
     width: 300
   },
   button: {
